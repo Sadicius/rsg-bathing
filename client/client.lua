@@ -1,7 +1,6 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
 BathingPed = nil
 
----@deprecated use state isBathingActive
 exports('IsBathingActive', function()
     return LocalPlayer.state.isBathingActive
 end)
@@ -44,7 +43,7 @@ end
 
 RegisterNetEvent('rsg-bathing:client:StartBath')
 AddEventHandler('rsg-bathing:client:StartBath', function(town)
-    LocalPlayer.state.isBathingActive = true
+    inbath = true
     if Config.BathingZones[town] then
         SetCurrentPedWeapon(cache.ped, `WEAPON_UNARMED`, true, 0, true, true)
 
@@ -233,11 +232,9 @@ RegisterNetEvent('rsg-bathing:client:StartDeluxeBath')
 AddEventHandler('rsg-bathing:client:StartDeluxeBath', function(animscene, town, cam)
     if not Citizen.InvokeNative(0x25557E324489393C, animscene) then return end
     Citizen.InvokeNative(0x84EEDB2C6E650000, animscene) --// _DELETE_ANIM_SCENE
-
     local animscene = Citizen.InvokeNative(0x1FCA98E33C1437B3, Config.BathingZones[town].dict, 0,  "s_deluxe_intro", false, true)
     SetAnimSceneEntity(animscene, "ARTHUR", cache.ped, 0)
     SetAnimSceneEntity(animscene, "Door", GetEntityByDoorhash(Config.BathingZones[town].door, 0), 0)
-
     local model = IsPedMale(cache.ped) and Config.BathingZones[town].lady or Config.BathingZones[town].guy
     LoadModel(model)
     BathingPed = CreatePed(model, GetEntityCoords(cache.ped)-vector3(0.0, 0.0, -5.0), 0.0, false, false, true, true)
@@ -455,9 +452,8 @@ CloseBathDoors = function()
 end
 
 AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() then
+    if resource ~= GetCurrentResourceName() then
         LocalPlayer.state.isBathingActive = false
-
         for i=1, #Config.CreatedEntries do
             if Config.CreatedEntries[i].type == "PED" then
                 if DoesEntityExist(Config.CreatedEntries[i].handle) then DeleteEntity(Config.CreatedEntries[i].handle) end

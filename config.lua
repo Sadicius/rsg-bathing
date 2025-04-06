@@ -1,5 +1,4 @@
 lib.locale()
-
 Config = {}
 
 Config.NormalBathPrice = 1
