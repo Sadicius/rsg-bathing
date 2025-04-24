@@ -220,7 +220,6 @@ ExitBathing = function(animscene, town, cam)
     N_0x69d65e89ffd72313(false, false)
     TriggerMusicEvent("MG_BATHING_STOP")
     Citizen.InvokeNative(0x704C908E9C405136, cache.ped)
-    TriggerServerEvent("RSGCore:Server:SetMetaData", "cleanliness", 100)
     TriggerEvent('hud:client:UpdateCleanliness', 100)
     TriggerServerEvent("rsg-bathing:server:setBathAsFree", town)
 
