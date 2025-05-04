@@ -2,8 +2,8 @@ lib.locale()
 
 Config = {}
 
-Config.NormalBathPrice = 1
-Config.DeluxeBathPrice = 5
+Config.NormalBathPrice = 1.00
+Config.DeluxeBathPrice = 5.00
 
 Config.BathingZones = {
     ["SaintDenis"] = {
